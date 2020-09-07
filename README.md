@@ -1,4 +1,4 @@
-# dicey-cafe
+<!-- # dicey-cafe
 
 ## Project setup
 ```
@@ -17,7 +17,7 @@ npm run build
 
 ### Lints and fixes files
 ```
-npm run lint
+npm run lint -->
 ```
 
 ### Customize configuration
