@@ -10,7 +10,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home,
     meta: { requiresAuth: true }
@@ -27,7 +27,7 @@ const routes = [
     meta: { requiresVisitor: true }
   },
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
     component: Login,
     meta: { requiresVisitor: true }
@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (!store.getters.isLogin) {
       next({
-        path: '/login'
+        name: 'Login'
       })
     } else {
       next()
@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
   } else if (to.matched.some(record => record.meta.requiresVisitor)) {
     if (store.getters.isLogin) {
       next({
-        path: '/'
+        name: 'Home'
       })
     } else {
       next()

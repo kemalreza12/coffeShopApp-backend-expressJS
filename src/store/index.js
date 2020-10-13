@@ -9,19 +9,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    count: 1,
-    username: 'reza',
-    todos: [],
-    user: {},
     token: localStorage.getItem('token') || null,
-    books: []
+    products: [],
+    paginations: null,
+    carts: [],
+    notif: ''
   },
   mutations: {
-    setMinus (state) {
-      state.count++
+    setMinus (state, index) {
+      const container = [...state.carts]
+      container[index].count -= 1
+      state.carts = container
     },
-    setPlush (state) {
-      state.count--
+    setPlus (state, index) {
+      const container = [...state.carts]
+      container[index].count += 1
+      state.carts = container
     },
     setTodos (state, payload) {
       state.todos = payload
@@ -33,18 +36,52 @@ export default new Vuex.Store({
     setToken (state, payload) {
       state.token = payload
     },
-    setBooks (state, payload) {
+    setProducts (state, payload) {
       // console.log(payload)
-      state.books = payload
+      state.products = payload
+    },
+    setDelete (state, id) {
+      console.log(id)
+      state.products = state.products.filter(item => item.id !== id)
+    },
+    setPaginations (state, payload) {
+      state.paginations = payload
+    },
+    addCart (state, payload) {
+      const isCart = state.carts.find((item) => {
+        return item.id === payload.id
+      })
+      console.log(isCart)
+      if (!isCart) {
+        const item = payload
+        item.count = 1
+        state.carts.push(item)
+      } else {
+        console.log(payload.id)
+        state.carts = state.carts.filter((item) => {
+          return item.id !== payload.id
+        })
+      }
+    },
+    removeFromCart (state, payload) {
+      state.carts = state.carts.filter((item) => {
+        return item.id !== payload.id
+      })
+    },
+    setEmptyCart (state) {
+      state.carts = []
+    },
+    setOrder (state, payload) {
+      state.orders = payload
+    },
+    setNotif (state, payload) {
+      state.notif = payload
+    },
+    setNotifActive (state, payload) {
+      state.notifActive = payload
     }
   },
   actions: {
-    getTodos (context) {
-      axios.get('https://jsonplaceholder.typicode.com/todos')
-        .then((res) => {
-          context.commit('setTodos', res.data)
-        })
-    },
     interceptorsResponse (context) {
       axios.interceptors.response.use(function (response) {
         return response
@@ -54,12 +91,12 @@ export default new Vuex.Store({
           if (error.response.data.result.message === 'Token Invalid') {
             context.commit('setToken', null)
             localStorage.removeItem('token')
-            router.push('/login')
+            router.push('/')
             alert('maaf anda tidak boleh merubah token dengan sendirinya')
           } else if (error.response.data.result.message === 'Token Expired') {
             context.commit('setToken', null)
             localStorage.removeItem('token')
-            router.push('/login')
+            router.push('/')
             alert('maaf session habis silahkan login kembali')
           }
         }
@@ -77,17 +114,53 @@ export default new Vuex.Store({
       })
     },
     login (context, payload) {
+      context.commit('setNotif', 'loading')
+      if (!payload.email) {
+        context.commit('setNotif', 'Please insert your email')
+      }
       console.log(payload)
-      // console.log(payload)
       return new Promise((resolve, reject) => {
-        axios.post('http://localhost:8000/api/v1/users/login', payload)
+        axios.post(`${process.env.VUE_APP_BASE_URL}/api/v1/users/login`, payload)
           .then((res) => {
-            console.log(res)
             context.commit('setUser', res.data.result)
             localStorage.setItem('token', res.data.result.token)
             // axios.defaults.headers.common.Authorization = `Bearer ${res.data.result.token}`
-            context.dispatch('interceptorsRequest')
+            context.commit('setNotif', 'Wellcome back ' + res.data.result.firstName)
             resolve(res.data.result[0])
+          })
+          .catch((err) => {
+            console.log(err.response.data.result)
+            context.commit('setNotif', err.response.data.result)
+            context.commit('setNotifActive', true)
+            reject(err)
+          })
+      })
+    },
+    register (context, payload) {
+      context.commit('setNotif', 'loading')
+      console.log(payload)
+      return new Promise((resolve, reject) => {
+        axios.post(`${process.env.VUE_APP_BASE_URL}/api/v1/users/register`, payload)
+          .then((res) => {
+            console.log(res)
+            context.commit('setNotif', res.data.result.message)
+            // axios.defaults.headers.common.Authorization = `Bearer ${res.data.result.token}`
+            resolve(res.data.result[0])
+            router.push('/')
+          })
+          .catch((err) => {
+            context.commit('setNotif', err.response.data.result)
+            reject(err)
+          })
+      })
+    },
+    handleSearch (context, key) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_BASE_URL}/api/v1/products?search=${key}`)
+          .then((res) => {
+            resolve(res.data.result)
+            console.log(res.data.result)
+            context.commit('setProducts', res.data.result)
           })
           .catch((err) => {
             console.log(err)
@@ -95,19 +168,67 @@ export default new Vuex.Store({
           })
       })
     },
-    getBooks (context) {
+    getProduct (context, payload) {
       return new Promise((resolve, reject) => {
-        axios.get('http://localhost:8000/api/v1/books')
+        axios.get(`${process.env.VUE_APP_BASE_URL}/api/v1/products${payload || ''}`)
           .then((res) => {
             // console.log(res)
-            context.commit('setBooks', res.data.result)
+            context.commit('setProducts', res.data.result)
+            context.commit('setPaginations', res.data.paginations)
             resolve(res.data.result)
           })
-          .reject((err) => {
+          .catch((err) => {
             console.log(err)
             reject(err)
           })
       })
+    },
+    insertProduct (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.post(`${process.env.VUE_APP_BASE_URL}/api/v1/products`, payload)
+          .then((res) => {
+            // console.log(res)
+            resolve(res.data.result)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      })
+    },
+    editProduct (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.patch(`${process.env.VUE_APP_BASE_URL}/api/v1/products/` + payload.id, payload.data)
+          .then((res) => {
+            console.log(res)
+            resolve(res.data.result)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      })
+    },
+    deleteProduct (context, id) {
+      return new Promise((resolve, reject) => {
+        axios.delete(`${process.env.VUE_APP_BASE_URL}/api/v1/products/` + id)
+          .then((res) => {
+            console.log(res.data)
+            context.commit('setDelete', id)
+            resolve(res.data)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      })
+    },
+    getNotif (context, payload) {
+      context.commit('setNotif', 'loading')
+      context.commit('setNotif', payload)
+    },
+    getNotifActive (context, payload) {
+      context.commit('setNotifActive', payload)
     }
   },
   getters: {
@@ -118,11 +239,29 @@ export default new Vuex.Store({
       return state.todos
     },
     isLogin (state) {
+      return state.token || localStorage.getItem('token')
+    },
+    isRegister (state) {
       return state.token !== null
     },
-    books (state) {
-      console.log(state.books)
-      return state.books
+    getProducts (state) {
+      console.log(state.products)
+      return state.products
+    },
+    getPage (state) {
+      return state.paginations
+    },
+    getCart (state) {
+      return state.carts
+    },
+    countCart (state) {
+      return state.carts.length
+    },
+    notif (state) {
+      return state.notif
+    },
+    notifActive (state) {
+      return state.notifActive
     }
   },
   modules: {

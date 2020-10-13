@@ -31,7 +31,9 @@
         <div class="chart">
           <StatisticHistory />
         </div>
-        <div class="recent-box"></div>
+        <div class="recent-box">
+          <RecentOrder />
+        </div>
       </content>
     </body>
   </div>
@@ -40,12 +42,14 @@
 <script>
 import Sidebar from '../../../components/_base/Sidebar'
 import StatisticHistory from '../../../components/_base/Statistichistory'
+import RecentOrder from '../../../components/_base/TableRecentOrder'
 
 export default {
   name: 'History',
   components: {
     Sidebar,
-    StatisticHistory
+    StatisticHistory,
+    RecentOrder
   }
 }
 
@@ -100,8 +104,9 @@ content {
   display: flex;
   flex-direction: column;
   width: 1440px;
-  height: 600px;
+  height: 530px;
   margin: 20px;
+  overflow: auto;
   /* border: 1px solid black; */
 }
 .cardList {
@@ -164,5 +169,10 @@ content {
     display: flex;
     flex-direction: row;
     /* border: 1px solid black; */
+}
+
+.recent-box {
+  width: 1230px;
+  margin-top: 30px;
 }
 </style>

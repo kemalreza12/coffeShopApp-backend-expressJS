@@ -1,34 +1,46 @@
 <template>
+<div>
   <div class="menu">
-    <router-link to="/">
+    <router-link to="/home">
         <div class="home"></div>
     </router-link>
     <router-link to="/History">
         <div class="history"></div>
     </router-link>
         <div class="add">
-          <button class="btn" @click="openModal"></button>
-          <ModalDirection />
+          <button class="btn" @click="toggleModal">-</button>
         </div>
   </div>
+          <Modal v-show="ModalActive" :data="dataModal" @close-modal="toggleModal"/>
+          </div>
 </template>
 
 <script>
-import ModalDirection from './ModalProduct'
+// import { mapActions } from 'vuex'
+import Modal from './Modal'
 
 export default {
   name: 'Sidebar',
   components: {
-    ModalDirection
+    Modal
   },
-  data () {
-    return {
-      modalOpen: false
+  data: () => ({
+    ModalActive: false,
+    dataModal: {
+      id: null,
+      name: '',
+      image: null,
+      price: '',
+      idCategory: ''
     }
-  },
+  }),
   methods: {
-    openModal () {
-      this.modalOpen = !this.modalOpen
+    // ...mapActions(['dataModal']),
+    toggleModal () {
+      this.modalActive = !this.modalActive
+      // if (!this.modalActive) {
+      //   this.clearModal()
+      // }
     }
   }
 }
