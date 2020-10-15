@@ -5,7 +5,7 @@
         <div class="tot">Total : </div>
         <div class="ppn">*Belum termasuk ppn</div>
     </div>
-    <div class="total-price">Rp. {{total()}}**</div>
+    <div class="total-price">Rp. {{total()}}*</div>
     </div>
         <Button id="btn-checkout" @click="$emit('launch-modalcheckout')">Checkout</Button>
         <button id="btn-cancel-select" @click="removeCart">Cancel</button>

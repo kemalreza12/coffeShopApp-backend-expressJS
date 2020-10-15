@@ -18,21 +18,21 @@
               <div class="day"><p>+2% Yesterday</p></div>
           </div>
           <div class="card cn">
-              <div class="textIn"><p>Today's Income</p></div>
-              <div class="num"><p>Rp. 1.000.000</p></div>
-              <div class="day"><p>+2% Yesterday</p></div>
+              <div class="textIn"><p>Orders</p></div>
+              <div class="num"><p>3.270</p></div>
+              <div class="day"><p>+5% Last Week</p></div>
           </div>
           <div class="card rg">
-              <div class="textIn"><p>Today's Income</p></div>
-              <div class="num"><p>Rp. 1.000.000</p></div>
-              <div class="day"><p>+2% Yesterday</p></div>
+              <div class="textIn"><p>This Year's Income</p></div>
+              <div class="num"><p>Rp. 100.000.000.000</p></div>
+              <div class="day"><p>+10% Last Year</p></div>
           </div>
         </div>
         <div class="chart">
           <StatisticHistory />
         </div>
         <div class="recent-box">
-          <RecentOrder />
+          <RecentOrder :orders = "order" @get-data = "getOrder"/>
         </div>
       </content>
     </body>
@@ -43,6 +43,7 @@
 import Sidebar from '../../../components/_base/Sidebar'
 import StatisticHistory from '../../../components/_base/Statistichistory'
 import RecentOrder from '../../../components/_base/TableRecentOrder'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'History',
@@ -50,6 +51,15 @@ export default {
     Sidebar,
     StatisticHistory,
     RecentOrder
+  },
+  methods: {
+    ...mapActions(['getOrder'])
+  },
+  computed: {
+    ...mapGetters(['order'])
+  },
+  mounted () {
+    this.getOrder()
   }
 }
 
@@ -132,7 +142,7 @@ content {
     margin-left: 30px;
 }
 .num {
-  width: 200px;
+    width: 300px;
     height: 30px;
     margin: 5px;
     margin-left: 30px;

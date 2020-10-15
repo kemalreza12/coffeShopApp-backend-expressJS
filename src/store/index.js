@@ -13,6 +13,7 @@ export default new Vuex.Store({
     products: [],
     paginations: null,
     carts: [],
+    orders: [],
     notif: ''
   },
   mutations: {
@@ -223,6 +224,27 @@ export default new Vuex.Store({
           })
       })
     },
+    getOrder (context) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_BASE_URL}/api/v1/histories/`)
+          .then((res) => {
+            console.log(res.data)
+            context.commit('setOrder', res.data.result)
+            resolve(res.data.result)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      })
+    },
+    logout () {
+      return new Promise((resolve, reject) => {
+        if (this.state.token !== null) {
+          localStorage.removeItem('token')
+        }
+      })
+    },
     getNotif (context, payload) {
       context.commit('setNotif', 'loading')
       context.commit('setNotif', payload)
@@ -256,6 +278,9 @@ export default new Vuex.Store({
     },
     countCart (state) {
       return state.carts.length
+    },
+    order (state) {
+      return state.orders
     },
     notif (state) {
       return state.notif

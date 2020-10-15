@@ -11,12 +11,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>@mdo</td>
+        <tr v-for="item in orders" :key="item.id">
+         <td>{{item.invoices}}</td>
+          <td>{{item.cashier}}</td>
+          <td>{{item.date}}</td>
+          <td>{{item.orders}}</td>
+          <td>{{item.amount}}</td>
         </tr>
       </tbody>
     </table>
@@ -25,7 +25,8 @@
 
 <script>
 export default {
-  name: 'RecantOrder'
+  name: 'RecantOrder',
+  props: ['orders', 'get-data']
 }
 </script>
 

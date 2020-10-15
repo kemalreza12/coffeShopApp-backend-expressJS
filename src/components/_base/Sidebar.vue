@@ -8,22 +8,16 @@
         <div class="history"></div>
     </router-link>
         <div class="add">
-          <button class="btn" @click="toggleModal">-</button>
+          <button class="btn" @click="handleLogout">-</button>
         </div>
   </div>
-          <Modal v-show="ModalActive" :data="dataModal" @close-modal="toggleModal"/>
-          </div>
+</div>
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
-import Modal from './Modal'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'Sidebar',
-  components: {
-    Modal
-  },
   data: () => ({
     ModalActive: false,
     dataModal: {
@@ -36,11 +30,16 @@ export default {
   }),
   methods: {
     // ...mapActions(['dataModal']),
+    ...mapActions(['logout']),
     toggleModal () {
       this.modalActive = !this.modalActive
       // if (!this.modalActive) {
       //   this.clearModal()
       // }
+    },
+    handleLogout () {
+      this.$router.go(0)
+      this.logout()
     }
   }
 }
@@ -80,13 +79,12 @@ export default {
 }
 .add {
     display: flex;
-    width: 40px;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     margin-top: 30px;
-    margin-left: 5px;
+    margin-left: 10px;
 
-    background-image: url('../../assets/icon/add.png');
+    background-image: url('../../assets/icon/logout.png');
     background-repeat: no-repeat;
     background-size: 100%;
 }
