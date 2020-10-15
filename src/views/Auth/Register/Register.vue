@@ -92,7 +92,7 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap');
 .containerq {
-  width: 1365px;
+  width: 1360px;
   height: 625px;
   background-image: url('../../../assets/images/kari-shea-pJn9WhMqFIs-unsplash.jpg');
   /* background-position: right 0px bottom -200px; */
@@ -130,6 +130,6 @@ export default {
   font-family: 'Leckerli One', cursive;
 }
 h1 {
-  font-size: 100px;
+  font-size: 300px;
 }
 </style>

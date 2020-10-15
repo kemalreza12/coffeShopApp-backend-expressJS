@@ -1,13 +1,9 @@
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
 <br />
 <p align="center">
 
   <h3 align="center">Dicey Cafe Shop App</h3>
   <p align="center">
-    <image align="center" width="200" src='https://vuejs.org/images/logo.png' />
+    <image align="center" width="300" src='./screenshots/Capture_052-removebg-preview.png' />
   </p>
 </p>
 
@@ -59,9 +55,12 @@ npm install
 
 <p align='center'>
   <span>
-      <image width="200" src='./screenshots/login.png' />
-      <image width="200" src='./screenshots/home.png' />
-      <image width="200" src='./screenshots/history.png' />
+      <image width="200" src='./screenshots/Capture 055.png' />
+      <image width="200" src='./screenshots/Capture 053-1.png' />
+      <image width="200" src='./screenshots/Capture 053.png' />
+      <image width="200" src='./screenshots/Capture 051.png' />
+      <image width="200" src='./screenshots/Capture 052.png' />
+      <image width="200" src='./screenshots/Capture 054.png' />
     </span>
 </p>
 
