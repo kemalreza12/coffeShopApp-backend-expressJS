@@ -39,6 +39,7 @@ export default {
     },
     handleLogout () {
       this.$router.go(0)
+      this.$router.push('/')
       this.logout()
     }
   }
