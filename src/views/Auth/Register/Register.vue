@@ -130,6 +130,6 @@ export default {
   font-family: 'Leckerli One', cursive;
 }
 h1 {
-  font-size: 300px;
+  font-size: 100px;
 }
 </style>
