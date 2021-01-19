@@ -269,7 +269,7 @@ content {
   flex-direction: row;
   justify-content: space-between;
   width: 1360px;
-  height: 560px;
+  height: auto;
 
   /* border: 1px solid black; */
 }
@@ -277,7 +277,7 @@ content {
   display: flex;
   flex-direction: column;
   width: 910px;
-  height: 555px;
+  height: 550px;
   margin: 10px;
   overflow: auto;
 

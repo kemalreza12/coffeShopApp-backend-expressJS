@@ -21,7 +21,7 @@
 
 ## About The Project
 
-Dicey Cafe Shop App is a website ordering coffee or food with a simple and functional appearance and also easy to use by consumers
+Dicey Cafe Shop App is a website ordering coffee or food with a simple and functional appearance and also easy to use by consumers. [View Demo](https://diceycafe.netlify.app/)
 
 ### Built With
 
